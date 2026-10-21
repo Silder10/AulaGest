@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="AulaGest, sistema de gestión académica">
+  <title>{% block title %}AulaGest{% endblock %} · AulaGest</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+{% if current_user.is_authenticated %}
+<div class="app-shell">
+  <aside class="sidebar">
+    <a class="brand" href="{{ url_for('dashboard') }}"><span class="brand-mark">A</span><span>AulaGest<small>GESTIÓN ACADÉMICA</small></span></a>
+    <div class="sidebar-label">MENÚ PRINCIPAL</div>
+    <nav class="nav">
+      <a href="{{ url_for('dashboard') }}" class="{% if request.endpoint == 'dashboard' %}active{% endif %}"><span>▦</span> Resumen</a>
+      {% if current_user.role == 'admin' %}
+      <a href="{{ url_for('students') }}" class="{% if request.endpoint in ['students','student_new','student_edit'] %}active{% endif %}"><span>♙</span> Estudiantes</a>
+      {% endif %}
+      <a href="{{ url_for('courses') }}" class="{% if request.endpoint in ['courses','course_new','course_edit'] %}active{% endif %}"><span>▤</span> Cursos</a>
+      <a href="{{ url_for('enrollments') }}" class="{% if request.endpoint in ['enrollments'] %}active{% endif %}"><span>▣</span> Matrículas</a>
+      <a href="{{ url_for('grades') }}" class="{% if request.endpoint == 'grades' %}active{% endif %}"><span>✓</span> Calificaciones</a>
+      {% if current_user.role == 'admin' %}<a href="{{ url_for('users') }}" class="{% if request.endpoint == 'users' %}active{% endif %}"><span>♧</span> Usuarios</a>{% endif %}
+    </nav>
+    <div class="sidebar-bottom"><div class="mini-avatar">{{ current_user.username[:1].upper() }}</div><div class="user-meta"><strong>{{ current_user.username }}</strong><small>{{ 'Administrador' if current_user.role == 'admin' else 'Usuario' }}</small></div><form method="post" action="{{ url_for('logout') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="icon-button" title="Cerrar sesión" aria-label="Cerrar sesión">↗</button></form></div>
+  </aside>
+  <main class="main-area">
+    <header class="topbar"><div><span class="eyebrow">AULAGEST / ACADÉMICO</span><div class="page-heading">{% block page_heading %}Panel de control{% endblock %}</div></div><div class="topbar-right"><span class="status-dot"></span><span>Sesión activa</span><div class="avatar">{{ current_user.username[:1].upper() }}</div></div></header>
+    <section class="content">
+      {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}<div class="flash-stack">{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}{% endwith %}
+      {% block content %}{% endblock %}
+      <footer class="footer">© {{ 2026 }} AulaGest <span>Plataforma de gestión académica</span></footer>
+    </section>
+  </main>
+</div>
+{% else %}
+<main class="auth-page">
+  <div class="auth-brand"><span class="brand-mark">A</span><span>AulaGest<small>GESTIÓN ACADÉMICA</small></span></div>
+  {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}<div class="flash-stack">{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}{% endwith %}
+  {% block auth_content %}{% endblock %}
+  <p class="auth-foot">AulaGest · Organización que impulsa el aprendizaje</p>
+</main>
+{% endif %}
+</body>
+</html>

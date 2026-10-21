@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Iniciar sesión{% endblock %}
+{% block auth_content %}
+<section class="login-card">
+  <div class="login-icon">✦</div><p class="eyebrow">BIENVENIDO DE NUEVO</p>
+  <h1>Tu espacio académico,<br><span>en un solo lugar.</span></h1>
+  <p class="muted">Ingresa con tus credenciales para continuar.</p>
+  <form method="post" class="form-stack">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label>Nombre de usuario<input name="username" autocomplete="username" required autofocus placeholder="Ej. sil_admin"></label>
+    <label>Contraseña<input type="password" name="password" autocomplete="current-password" required placeholder="Escribe tu contraseña"></label>
+    <button class="btn btn-primary btn-wide" type="submit">Iniciar sesión <span>→</span></button>
+  </form>
+  <div class="login-note"><span>♧</span> Acceso protegido para usuarios autorizados</div>
+</section>
+{% endblock %}

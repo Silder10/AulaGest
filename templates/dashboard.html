@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Resumen{% endblock %}{% block page_heading %}Resumen general{% endblock %}
+{% block content %}
+<div class="welcome-row"><div><p class="eyebrow">TU PANEL DE CONTROL</p><h1>¡Hola, {{ current_user.username }}! <span class="wave">✦</span></h1><p class="muted">{% if current_user.role == 'admin' %}Aquí tienes una vista general de la actividad académica.{% else %}Consulta tus cursos, matrículas y resultados académicos.{% endif %}</p></div>{% if current_user.role == 'admin' %}<a class="btn btn-primary" href="{{ url_for('student_new') }}">＋ Nuevo estudiante</a>{% endif %}</div>
+{% if stats %}
+<div class="stats-grid">
+  <article class="stat-card"><div class="stat-top"><span>Estudiantes</span><span class="stat-icon purple">♙</span></div><div class="stat-number">{{ stats.students }}</div><div class="stat-foot">Registros académicos</div></article>
+  <article class="stat-card"><div class="stat-top"><span>Cursos</span><span class="stat-icon blue">▤</span></div><div class="stat-number">{{ stats.courses }}</div><div class="stat-foot">En el catálogo</div></article>
+  <article class="stat-card"><div class="stat-top"><span>Matrículas</span><span class="stat-icon green">▣</span></div><div class="stat-number">{{ stats.enrollments }}</div><div class="stat-foot">Inscripciones registradas</div></article>
+  <article class="stat-card"><div class="stat-top"><span>Calificaciones</span><span class="stat-icon orange">✓</span></div><div class="stat-number">{{ stats.grades }}</div><div class="stat-foot">Notas registradas</div></article>
+</div>
+<section class="panel"><div class="panel-heading"><div><h2>Últimas matrículas</h2><p class="muted">Actividad académica reciente</p></div><a class="text-link" href="{{ url_for('enrollments') }}">Ver todas →</a></div>
+{% if recent %}<div class="table-wrap"><table><thead><tr><th>Estudiante</th><th>Curso</th><th>Periodo</th><th>Nota</th></tr></thead><tbody>{% for item in recent %}<tr><td><div class="person-cell"><span class="table-avatar">{{ item.student.first_name[:1] }}</span><strong>{{ item.student.full_name }}</strong></div></td><td>{{ item.course.name }}</td><td><span class="pill">{{ item.academic_period }}</span></td><td>{% if item.grade %}<strong>{{ "%.2f"|format(item.grade.grade|float) }}</strong>{% else %}<span class="muted">Pendiente</span>{% endif %}</td></tr>{% endfor %}</tbody></table></div>{% else %}<div class="empty-state"><span>▣</span><strong>Aún no hay matrículas</strong><p>Cuando registres matrículas aparecerán aquí.</p></div>{% endif %}</section>
+{% else %}
+<section class="panel"><div class="panel-heading"><div><h2>Mis matrículas</h2><p class="muted">Cursos vinculados a tu cuenta</p></div><a class="text-link" href="{{ url_for('grades') }}">Ver calificaciones →</a></div>
+{% if own_enrollments %}<div class="table-wrap"><table><thead><tr><th>Curso</th><th>Docente</th><th>Periodo</th><th>Calificación</th></tr></thead><tbody>{% for item in own_enrollments %}<tr><td><strong>{{ item.course.name }}</strong><small class="cell-sub">{{ item.course.code }}</small></td><td>{{ item.course.teacher_name }}</td><td><span class="pill">{{ item.academic_period }}</span></td><td>{% if item.grade %}<strong>{{ "%.2f"|format(item.grade.grade|float) }}</strong>{% else %}<span class="muted">Pendiente</span>{% endif %}</td></tr>{% endfor %}</tbody></table></div>{% else %}<div class="empty-state"><span>▤</span><strong>No tienes matrículas vinculadas</strong><p>Contacta al administrador si crees que esto es un error.</p></div>{% endif %}</section>
+{% endif %}
+{% endblock %}
