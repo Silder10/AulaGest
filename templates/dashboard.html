@@ -2,6 +2,9 @@
 {% block title %}Resumen{% endblock %}{% block page_heading %}Resumen general{% endblock %}
 {% block content %}
 <div class="welcome-row"><div><p class="eyebrow">TU PANEL DE CONTROL</p><h1>¡Hola, {{ current_user.username }}! <span class="wave">✦</span></h1><p class="muted">{% if current_user.role == 'admin' %}Aquí tienes una vista general de la actividad académica.{% else %}Consulta tus cursos, matrículas y resultados académicos.{% endif %}</p></div>{% if current_user.role == 'admin' %}<a class="btn btn-primary" href="{{ url_for('student_new') }}">＋ Nuevo estudiante</a>{% endif %}</div>
+<section class="academic-hero">
+  <div class="academic-hero-copy"><span class="hero-tag">AULAGEST · TU ESPACIO ACADÉMICO</span><h2>El conocimiento abre<br>nuevos caminos.</h2><p>Todo lo importante de tu vida académica, organizado en una plataforma.</p><a class="hero-source" href="https://unsplash.com/s/photos/university-library" target="_blank" rel="noopener noreferrer">Imagen de referencia · Unsplash ↗</a></div>
+</section>
 {% if stats %}
 <div class="stats-grid">
   <article class="stat-card"><div class="stat-top"><span>Estudiantes</span><span class="stat-icon purple">♙</span></div><div class="stat-number">{{ stats.students }}</div><div class="stat-foot">Registros académicos</div></article>

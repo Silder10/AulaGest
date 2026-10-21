@@ -36,6 +36,7 @@
 </div>
 {% else %}
 <main class="auth-page">
+  <div class="auth-photo-panel" aria-label="Estudiantes en un entorno académico"><div class="auth-photo-overlay"><span class="photo-kicker">APRENDE · CRECE · AVANZA</span><h1>Un mejor futuro<br>comienza aprendiendo.</h1><p>Organiza tu experiencia académica desde un solo lugar.</p><a href="https://unsplash.com/s/photos/university-students" target="_blank" rel="noopener noreferrer">Fotografías: Unsplash ↗</a></div></div>
   <div class="auth-brand"><span class="brand-mark">A</span><span>AulaGest<small>GESTIÓN ACADÉMICA</small></span></div>
   {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}<div class="flash-stack">{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}{% endwith %}
   {% block auth_content %}{% endblock %}
